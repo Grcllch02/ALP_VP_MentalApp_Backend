@@ -5,12 +5,13 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
+    url      = env("DATABASE_URL")
 }
 
 model User{
@@ -28,3 +29,42 @@ model User{
   @@map("users")
 }
 
+// Fitur Chelseaa
+model Music{
+  id Int @id @default(autoincrement())
+  title String @db.VarChar(100)
+  fileUrl String @db.VarChar(100)
+  duration Int @db.Integer(100)
+  
+  @@map("musics")
+}
+
+model musicFav{
+  id Int @id @default(autoincrement())
+
+  @@map("musicFavorite")
+}
+
+model musicCategory{
+  id Int @id @default(autoincrement())
+
+  name String @db.VarChar(100)
+
+  @@map("musicCategory")
+}
+
+model focusSession{
+  id Int @id @default(autoincrement())
+
+  duration Int @db.Integer(100)
+
+  @@map("focusSession")
+}
+
+model focusTimerSession{
+  id Int @id @default(autoincrement())
+
+  duration Int @db.Integer(100)
+
+  @@map("focusTimerSession")
+}
