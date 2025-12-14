@@ -25,6 +25,13 @@ model User{
   email String @db.VarChar(150) @unique 
   password String @db.VarChar(100)
 
+  // --------- PUNYA CHELSEA ---------
+  // 1 user bisa punya banyak musicFav
+  musicsFav musicFav[]
+
+  // 1 user bisa punya banyak focusTimerSession
+  focusTimers focusTimerSession[]
+
   // untuk kasih nama tabelnya 
   @@map("users")
 }
@@ -35,6 +42,13 @@ model Music{
   title String @db.VarChar(100)
   fileUrl String @db.VarChar(100)
   duration Int @db.Integer(100)
+
+  // 1 music bisa punya banyak musicFav
+  musicsFav musicFav[]
+
+  // 1 music dipunyai 1 musicCategory
+  musicCategory_id Int
+  musicCategory musicCategory @relation(fields: [musicCategory_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   
   @@map("musics")
 }
@@ -42,6 +56,13 @@ model Music{
 model musicFav{
   id Int @id @default(autoincrement())
 
+  // 1 music fav dipunyai 1 user
+  user_id Int
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  // 1 music fav dipunyai 1 music 
+  music_id Int
+  music Music @relation(fields: [music_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   @@map("musicFavorite")
 }
 
@@ -49,6 +70,9 @@ model musicCategory{
   id Int @id @default(autoincrement())
 
   name String @db.VarChar(100)
+
+  // 1 musicCategory bisa punya banyak music
+  musics Music[]
 
   @@map("musicCategory")
 }
@@ -58,6 +82,9 @@ model focusSession{
 
   duration Int @db.Integer(100)
 
+  // 1 focusSession bisa punya banyak focusTimer
+  focusTimers focusTimerSession[]
+
   @@map("focusSession")
 }
 
@@ -65,6 +92,14 @@ model focusTimerSession{
   id Int @id @default(autoincrement())
 
   duration Int @db.Integer(100)
+
+  // 1 focusTimer dipunyai 1 user 
+  user_id Int
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  // 1 focusTimer dipunyai 1 focusSession
+  focusSession_id Int
+  focusSession focusSession @relation(fields: [focusSession_id], references: [id])
 
   @@map("focusTimerSession")
 }
