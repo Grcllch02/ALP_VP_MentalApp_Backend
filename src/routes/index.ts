@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import gameStateRoutes from './gameState.routes';
-import authRoutes from './auth.routes';
+import gameStateRoutes from './gameState-routes';
+import authRoutes from './auth-routes';
 
 const router = Router();
 

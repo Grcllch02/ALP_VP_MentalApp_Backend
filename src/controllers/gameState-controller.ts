@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { GameStateService } from '../services/gameState.service';
+import { GameStateService } from '../services/gameState-service';
 
 export class GameStateController {
   private service: GameStateService;
