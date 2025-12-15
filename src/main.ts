@@ -1,23 +1,18 @@
 import 'dotenv/config';
-import express, { Request, Response } from 'express';
-import { AuthService } from './services/auth-service';
-import { GameStateService } from './services/gameState-service';
+import express from 'express';
 import routes from './routes';
-import { PORT as ENV_PORT } from './utils/env-util';
-
+import { PORT } from './utils/env-util';
 
 const app = express();
-const PORT = ENV_PORT ? Number(ENV_PORT) : 3000;
 
 app.use(express.json());
 
-app.get('/health', (_req: Request, res: Response) => {
+app.get('/health', (_req, res) => {
     res.json({ status: 'ok' });
 });
 
+app.use(routes);
 
-app.use('/', routes);
-
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+app.listen(PORT ?? 3000, () => {
+    console.log(`Server running on http://localhost:${PORT ?? 3000}`);
 });
