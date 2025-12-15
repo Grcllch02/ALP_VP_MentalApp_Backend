@@ -39,4 +39,14 @@ export class AuthController {
       res.status(status).json({ message });
     }
   };
+
+  getAllUsers = async (_req: Request, res: Response) => {
+    try {
+      const users = await this.service.getUsers();
+      res.json(users);
+    } catch (error) {
+      console.error('Get users error:', error);
+      res.status(500).json({ message: 'Failed to fetch users' });
+    }
+  };
 }
