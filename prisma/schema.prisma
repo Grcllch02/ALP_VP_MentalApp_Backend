@@ -41,7 +41,7 @@ model Music{
   id Int @id @default(autoincrement())
   title String @db.VarChar(100)
   fileUrl String @db.VarChar(100)
-  duration Int @db.Integer(100)
+  duration Int @db.Integer()
 
   // 1 music bisa punya banyak musicFav
   musicsFav musicFav[]
@@ -80,7 +80,7 @@ model musicCategory{
 model focusSession{
   id Int @id @default(autoincrement())
 
-  duration Int @db.Integer(100)
+  duration Int @db.Integer()
 
   // 1 focusSession bisa punya banyak focusTimer
   focusTimers focusTimerSession[]
@@ -91,7 +91,7 @@ model focusSession{
 model focusTimerSession{
   id Int @id @default(autoincrement())
 
-  duration Int @db.Integer(100)
+  duration Int @db.Integer()
 
   // 1 focusTimer dipunyai 1 user 
   user_id Int
