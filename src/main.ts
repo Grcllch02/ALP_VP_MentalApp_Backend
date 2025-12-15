@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import express, { Request, Response } from 'express';
-import { AuthService } from './services/auth.service';
-import { GameStateService } from './services/gameState.service';
+import { AuthService } from './services/auth-service';
+import { GameStateService } from './services/gameState-service';
 
 const app = express();
 const authService = new AuthService();

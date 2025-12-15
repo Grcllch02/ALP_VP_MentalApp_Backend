@@ -1,4 +1,5 @@
 import { AuthRepository } from '../repositories/auth.repository';
+import { generatedToken } from "../utils/jwt-util"
 
 export class AuthService {
   private repository: AuthRepository;
@@ -7,23 +8,30 @@ export class AuthService {
     this.repository = new AuthRepository();
   }
 
+  
   async register(data: { username: string; email: string; password: string }) {
-    const existingUser = await this.repository.findUserByEmailOrUsername(data.email, data.username);
-    
-    if (existingUser) {
-      const field = existingUser.email === data.email ? 'Email' : 'Username';
-      throw new Error(`${field} already ${field === 'Email' ? 'registered' : 'taken'}`);
-    }
+  const existingUser =
+    await this.repository.findUserByEmailOrUsername(data.email, data.username)
 
-    const user = await this.repository.createUser(data);
-
-    const { password: _, ...userWithoutPassword } = user;
-    
-    return {
-      user: userWithoutPassword,
-      token: `mock-token-${user.id}`
-    };
+  if (existingUser) {
+    const field = existingUser.email === data.email ? 'Email' : 'Username'
+    throw new Error(`${field} already ${field === 'Email' ? 'registered' : 'taken'}`)
   }
+
+  const user = await this.repository.createUser(data)
+  const { password: _, ...userWithoutPassword } = user
+
+  const token = generatedToken({
+    id: user.id,
+    username: user.username,
+    email: user.email
+  })
+
+  return {
+    user: userWithoutPassword,
+    token
+  }
+}
 
   async login(email: string, password: string) {
     const user = await this.repository.findUserByEmail(email);
@@ -32,11 +40,16 @@ export class AuthService {
       throw new Error('Invalid email or password');
     }
 
+    const token = generatedToken({
+      id: user.id,
+      username: user.username,
+      email: user.email
+    })
     const { password: _, ...userWithoutPassword } = user;
     
     return {
       user: userWithoutPassword,
-      token: `mock-token-${user.id}`
+      token
     };
   }
 
