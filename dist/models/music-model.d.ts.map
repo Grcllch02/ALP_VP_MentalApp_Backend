@@ -1,0 +1,1 @@
+{"version":3,"file":"music-model.d.ts","sourceRoot":"","sources":["../../src/models/music-model.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,cAAc;IAC3B,KAAK,EAAE,MAAM,CAAA;IACb,OAAO,EAAE,MAAM,CAAA;IACf,QAAQ,EAAE,MAAM,CAAA;IAChB,gBAAgB,EAAE,MAAM,CAAA;CAC3B;AAED,MAAM,WAAW,kBAAkB;IAC/B,OAAO,EAAE,MAAM,CAAA;IACf,OAAO,CAAC,EAAE,MAAM,CAAA;CACnB"}
