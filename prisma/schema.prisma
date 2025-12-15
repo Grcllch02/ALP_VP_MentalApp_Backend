@@ -32,6 +32,9 @@ model User{
   // 1 user bisa punya banyak focusTimerSession
   focusTimers focusTimerSession[]
 
+  // 1 user bisa punya banyak gameState
+  gameStates GameState[]
+
   // untuk kasih nama tabelnya 
   @@map("users")
 }
@@ -41,7 +44,7 @@ model Music{
   id Int @id @default(autoincrement())
   title String @db.VarChar(100)
   fileUrl String @db.VarChar(100)
-  duration Int @db.Integer()
+  duration Int @db.Integer
 
   // 1 music bisa punya banyak musicFav
   musicsFav musicFav[]
@@ -80,7 +83,7 @@ model musicCategory{
 model focusSession{
   id Int @id @default(autoincrement())
 
-  duration Int @db.Integer()
+  duration Int @db.Integer
 
   // 1 focusSession bisa punya banyak focusTimer
   focusTimers focusTimerSession[]
@@ -91,7 +94,7 @@ model focusSession{
 model focusTimerSession{
   id Int @id @default(autoincrement())
 
-  duration Int @db.Integer()
+  duration Int @db.Integer
 
   // 1 focusTimer dipunyai 1 user 
   user_id Int
@@ -102,4 +105,30 @@ model focusTimerSession{
   focusSession focusSession @relation(fields: [focusSession_id], references: [id])
 
   @@map("focusTimerSession")
+}
+
+// Game State Model
+model GameState {
+  id Int @id @default(autoincrement())
+
+  // 1 gameState dipunyai 1 user
+  user_id Int
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  // Board state stored as JSON string representing the game board
+  boardState String @db.Text
+
+  // Current score
+  score Int @default(0)
+
+  // Next blocks stored as JSON string
+  nextBlocks String @db.Text
+
+  // Timestamp for when the game state was last updated
+  updatedAt DateTime @updatedAt
+
+  // Timestamp for when the game state was created
+  createdAt DateTime @default(now())
+
+  @@map("gameStates")
 }
