@@ -44,6 +44,18 @@ app.post('/auth/login', async (req: Request, res: Response) => {
   }
 });
 
+// Users: list all or by ids query (?ids=1,2,3)
+app.get('/users', async (req: Request, res: Response) => {
+  try {
+    const idsParam = (req.query.ids as string | undefined) || undefined;
+    const ids = idsParam ? idsParam.split(',').map((v) => Number(v)).filter((n) => !Number.isNaN(n)) : undefined;
+    const users = await authService.getUsers(ids);
+    res.json(users);
+  } catch {
+    res.status(500).json({ message: 'Failed to fetch users' });
+  }
+});
+
 // GameState endpoints directly
 app.get('/game-states', async (_req: Request, res: Response) => {
   try {

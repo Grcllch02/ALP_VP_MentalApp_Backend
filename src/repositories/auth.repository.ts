@@ -3,6 +3,20 @@ import { PrismaClient } from '../../generated/prisma';
 const prisma = new PrismaClient();
 
 export class AuthRepository {
+  async findAllUsers() {
+    return await prisma.user.findMany({
+      select: { id: true, username: true, email: true }
+    });
+  }
+
+  async findUsersByIds(ids: number[]) {
+    if (!ids || ids.length === 0) return [];
+    return await prisma.user.findMany({
+      where: { id: { in: ids } },
+      select: { id: true, username: true, email: true }
+    });
+  }
+
   async findUserByEmail(email: string) {
     if (!email) {
       return null;

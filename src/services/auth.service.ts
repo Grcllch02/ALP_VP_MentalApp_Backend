@@ -39,4 +39,11 @@ export class AuthService {
       token: `mock-token-${user.id}`
     };
   }
+
+  async getUsers(ids?: number[]) {
+    if (ids && ids.length > 0) {
+      return await this.repository.findUsersByIds(ids);
+    }
+    return await this.repository.findAllUsers();
+  }
 }
