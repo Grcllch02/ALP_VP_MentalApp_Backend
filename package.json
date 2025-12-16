@@ -23,6 +23,7 @@
   "homepage": "https://github.com/Grcllch02/ALP_VP_MentalApp_Backend#readme",
   "dependencies": {
     "@prisma/client": "^6.19.1",
+    "bcrypt": "^6.0.0",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
@@ -31,6 +32,7 @@
     "zod": "^4.2.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.0.2",

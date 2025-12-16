@@ -12,7 +12,7 @@ export const generatedToken = (
     })
 }
 
-// untuk token verivier 
+// untuk token verifier 
 export const verifyToken = (token: string): UserJWTPayload => {
     return jwt.verify(token, JWT_SECRET_KEY || "secret_key") as UserJWTPayload
 }

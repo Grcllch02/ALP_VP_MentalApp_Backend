@@ -1,49 +1,76 @@
-import { Request, Response } from "express"
-import * as musicService from "../services/music-service"
-import { AuthRequest } from "../auth-request"
+import { Response, NextFunction, Request } from "express"
+import { MusicService } from "../services/music-service"
+import { UserRequest } from "../models/user-request"
+import { CreateMusicRequest } from "../models/music-model"
 
-export const getAllMusic = async (req: Request, res: Response) => {
-  const music = await musicService.getAllMusic()
-  res.json(music)
-}
+export class MusicController {
 
-export const getMusicByCategory = async (req: Request, res: Response) => {
-  const categoryId = Number(req.params.categoryId)
-  const music = await musicService.getMusicByCategory(categoryId)
-  res.json(music)
-}
+  static async createMusic(
+    req: UserRequest,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const request: CreateMusicRequest = req.body
+      const response = await MusicService.createMusic(request)
 
-export const addMusic = async (req: Request, res: Response) => {
-  const music = await musicService.addMusic(req.body)
-  res.status(201).json(music)
-}
+      res.status(201).json({
+        data: response
+      })
+    } catch (error) {
+      next(error)
+    }
+  }
 
-export const deleteMusic = async (req: Request, res: Response) => {
-  const id = Number(req.params.id)
-  await musicService.removeMusic(id)
-  res.json({ message: "Music deleted" })
-}
+  static async getAllMusic(
+    req: UserRequest,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const result = await MusicService.getAllMusic()
+      res.status(200).json({
+        data: result
+      })
+    } catch (error) {
+      next(error)
+    }
+  }
 
-// FAVORITE
-export const addFavorite = async (req: AuthRequest, res: Response) => {
-  const musicId = Number(req.params.musicId)
-  const userId = req.user!.id
+  static async getByCategory(
+    req: Request<{ categoryId: string }>,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const categoryId = Number(req.params.categoryId);
 
-  const fav = await musicService.addToFavorite(userId, musicId)
-  res.status(201).json(fav)
-}
+      const musics = await MusicService.getByCategory(categoryId);
 
-// STATE
-export const playMusic = async (req: Request, res: Response) => {
-  const id = Number(req.params.id)
-  const result = await musicService.playMusic(id)
-  res.json(result)
-}
+      res.status(200).json({
+        data: musics,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 
-export const pauseMusic = async (req: Request, res: Response) => {
-  res.json(await musicService.pauseMusic())
-}
+  static async addFavoriteMusic(
+    req: UserRequest,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const userId = req.user!.id
+      const musicId = Number(req.body.musicId)
 
-export const resumeMusic = async (req: Request, res: Response) => {
-  res.json(await musicService.resumeMusic())
+      await MusicService.addFavoriteMusic(userId, musicId)
+
+      res.status(200).json({
+        message: "Music added to favorite"
+      })
+    } catch (error) {
+      next(error)
+    }
+  }
 }

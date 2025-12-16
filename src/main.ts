@@ -1,18 +1,26 @@
-import 'dotenv/config';
 import express from 'express';
-import routes from './routes';
 import { PORT } from './utils/env-util';
+
+import 'dotenv/config';
+import { publicRouter } from "./routes/public-api"
+import { errorMiddleware } from './middlewares/error-middleware';
+import { privateRouter } from './routes/private-api';
+import path from "path";
+
 
 const app = express();
 
-app.use(express.json());
+app.use(express.json())
+app.use("/api", publicRouter)
+app.use("/api", privateRouter)
+app.use(errorMiddleware)
 
-app.get('/health', (_req, res) => {
-    res.json({ status: 'ok' });
-});
+// biar bisa akses musicnya di web
+app.use(
+    "/uploads",
+    express.static(path.join(process.cwd(), "uploads"))
+);
 
-app.use(routes);
-
-app.listen(PORT ?? 3000, () => {
-    console.log(`Server running on http://localhost:${PORT ?? 3000}`);
-});
+app.listen(PORT, () => {
+    console.log(`Connnected to port ${PORT}`)
+})
