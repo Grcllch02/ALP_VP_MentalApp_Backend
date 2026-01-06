@@ -28,4 +28,3 @@ export const authMiddleware = (req: UserRequest, res: Response, next: NextFuncti
         next(error)
     }
 }
-

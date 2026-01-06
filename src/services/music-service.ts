@@ -94,4 +94,19 @@ export class MusicService {
             },
         });
     }
+
+    static async getFavorites(userId: number) {
+        return prismaClient.musicFav.findMany({
+            where: {
+                user_id: userId,
+            },
+            include: {
+                music: {
+                    include: {
+                        musicCategory: true,
+                    },
+                },
+            },
+        });
+    }
 }

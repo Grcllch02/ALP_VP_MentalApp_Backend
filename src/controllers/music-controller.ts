@@ -55,12 +55,30 @@ export class MusicController {
     }
   }
 
-  static async addFavoriteMusic(
+  static async getFavorites(
     req: UserRequest,
     res: Response,
     next: NextFunction
   ) {
     try {
+      const userId = req.user!.id;
+
+      const favorites = await MusicService.getFavorites(userId);
+
+      res.status(200).json({
+        data: favorites,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async addFavoriteMusic(
+    req: UserRequest,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {   
       const userId = req.user!.id
       const musicId = Number(req.body.musicId)
 
