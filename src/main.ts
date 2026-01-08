@@ -1,4 +1,5 @@
 import express from 'express';
+import todoRoutes from './routes/todoRoutes'; 
 import { PORT } from './utils/env-util';
 
 import 'dotenv/config';
@@ -8,11 +9,13 @@ import { privateRouter } from './routes/private-api';
 import path from "path";
 
 
+
 const app = express();
 
 app.use(express.json())
 app.use("/api", publicRouter)
 app.use("/api", privateRouter)
+app.use('/api/todos', todoRoutes);
 app.use(errorMiddleware)
 
 // biar bisa akses musicnya di web
